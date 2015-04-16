@@ -1,0 +1,16 @@
+ContentGetPostTool
+====================
+
+A testing project that can get magnet link from some search engine , convert as torrent,  and auto-post to javlib... u know that..
+
+Currently implement :
+
+SerachEngine: btspread
+
+ConvertEngine: torcache , btBox
+
+WebDrive : YiMuHe , colafile
+
+PostTarget : javlib
+ 
+Feel free to discuss.
