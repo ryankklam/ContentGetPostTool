@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.ResourceSearchRequestDetailFileMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.ResourceSearchRequestDetailFile" >
+    <id column="ProcessSequence" property="processsequence" jdbcType="VARCHAR" />
+    <id column="SearchKeyWord" property="searchkeyword" jdbcType="VARCHAR" />
+    <result column="RequestProcessStatus" property="requestprocessstatus" jdbcType="VARCHAR" />
+    <result column="magnetInfoHashInHex" property="magnetinfohashinhex" jdbcType="VARCHAR" />
+  </resultMap>
+  
+
+  <sql id="Base_Column_List" >
+    ProcessSequence, SearchKeyWord, RequestProcessStatus, magnetInfoHashInHex
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.mybatis.model.ResourceSearchRequestDetailFileKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from resourcesearchrequestdetailfile
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+      and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectPendingProcessRecordBySequence" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resourcesearchrequestdetailfile
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+	  and RequestProcessStatus = "Pending" 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.mybatis.model.ResourceSearchRequestDetailFileKey" >
+    delete from resourcesearchrequestdetailfile
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+      and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.ResourceSearchRequestDetailFile" >
+    insert into resourcesearchrequestdetailfile (ProcessSequence, SearchKeyWord, RequestProcessStatus, 
+      magnetInfoHashInHex)
+    values (#{processsequence,jdbcType=VARCHAR}, #{searchkeyword,jdbcType=VARCHAR}, #{requestprocessstatus,jdbcType=VARCHAR}, 
+      #{magnetinfohashinhex,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.ResourceSearchRequestDetailFile" >
+    insert into resourcesearchrequestdetailfile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processsequence != null" >
+        ProcessSequence,
+      </if>
+      <if test="searchkeyword != null" >
+        SearchKeyWord,
+      </if>
+      <if test="requestprocessstatus != null" >
+        RequestProcessStatus,
+      </if>
+      <if test="magnetinfohashinhex != null" >
+        magnetInfoHashInHex,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processsequence != null" >
+        #{processsequence,jdbcType=VARCHAR},
+      </if>
+      <if test="searchkeyword != null" >
+        #{searchkeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="requestprocessstatus != null" >
+        #{requestprocessstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="magnetinfohashinhex != null" >
+        #{magnetinfohashinhex,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.ResourceSearchRequestDetailFile" >
+    update resourcesearchrequestdetailfile
+    <set >
+      <if test="requestprocessstatus != null" >
+        RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="magnetinfohashinhex != null" >
+        magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+      and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.ResourceSearchRequestDetailFile" >
+    update resourcesearchrequestdetailfile
+    set RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR},
+      magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+      and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+  </update>
+</mapper>

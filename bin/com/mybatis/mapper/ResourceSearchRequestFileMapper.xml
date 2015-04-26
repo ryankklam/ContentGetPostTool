@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.inter.ResourceSearchRequestFileMapper">
+  <resultMap id="BaseResultMap" type="com.mybatis.model.ResourceSearchRequestFile">
+    <id column="ProcessSequence" jdbcType="VARCHAR" property="processsequence" />
+    <result column="SearchKeyWord" jdbcType="VARCHAR" property="searchkeyword" />
+    <result column="RequestProcessStatus" jdbcType="VARCHAR" property="requestprocessstatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ProcessSequence, SearchKeyWord, RequestProcessStatus
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resourcesearchrequestfile
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resourcesearchrequestfile
+  </select>
+
+  <select id="CheckOutstandingProcessStatusCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*) from
+    resourcesearchrequestfile
+    where requestprocessstatus != "Completed" and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectLatestProcessRecordByPrefix" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from resourcesearchrequestfile
+    where SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+    ORDER BY ProcessSequence Desc 
+	LIMIT 1
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from resourcesearchrequestfile
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.ResourceSearchRequestFile">
+    insert into resourcesearchrequestfile (ProcessSequence, SearchKeyWord, RequestProcessStatus
+      )
+    values (#{processsequence,jdbcType=VARCHAR}, #{searchkeyword,jdbcType=VARCHAR}, #{requestprocessstatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.ResourceSearchRequestFile">
+    insert into resourcesearchrequestfile
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="processsequence != null">
+        ProcessSequence,
+      </if>
+      <if test="searchkeyword != null">
+        SearchKeyWord,
+      </if>
+      <if test="requestprocessstatus != null">
+        RequestProcessStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="processsequence != null">
+        #{processsequence,jdbcType=VARCHAR},
+      </if>
+      <if test="searchkeyword != null">
+        #{searchkeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="requestprocessstatus != null">
+        #{requestprocessstatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.ResourceSearchRequestFile">
+    update resourcesearchrequestfile
+    <set>
+      <if test="searchkeyword != null">
+        SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR},
+      </if>
+      <if test="requestprocessstatus != null">
+        RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.ResourceSearchRequestFile">
+    update resourcesearchrequestfile
+    set SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR},
+      RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR}
+    where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
+  </update>
+</mapper>
