@@ -6,6 +6,7 @@
  */
 package main.command;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,10 +45,23 @@ public class ContentGetPostToolCommander {
 	private static final Logger logger = LoggerFactory.getLogger(ContentGetPostToolCommander.class);
 	
 	public static void main(String[] args) throws Exception{
-		downloadResourceByPrefix();
+		
+		int index = 3;
+		String prefix = "JUSD";
+		
+		switch(index){
+		
+			case 1:  downloadResourceByPrefix(prefix); break;// download resource
+			case 2:  checkOutstandingUpload(prefix); break;//check outstanding
+			case 3:  PostJavByColaFile(prefix);		break;//post jav
+			
+			default: logger.info("Goto dummy default method!!!");
+		}
+		
+		
 	}
 	
-	public static void downloadResourceByPrefix() throws Exception {
+	public static void downloadResourceByPrefix(String prefix) throws Exception {
 		
 		int stage = 1;
 		
@@ -56,7 +70,9 @@ public class ContentGetPostToolCommander {
 //		String prefix = "MILF";
 //		String prefix = "SCOP";
 //		String prefix = "BMD";
-		String prefix = "UPSM";
+		
+		
+//		String prefix = "UPSM";
 //		String prefix = "TYOD";
 //		String prefix = "FSET";
 //		String prefix = "IPTD";
@@ -212,20 +228,24 @@ public class ContentGetPostToolCommander {
 		//copy download folder to HEX folder for backup
 		String sourceDir = Config.UPLOAD_DONWLOAD_MAIN_PATH + "\\" + prefix;
 		String targetDir = Config.UPLOAD_DONWLOAD_HEX_BACKUP_PATH + "\\" + prefix + "_" + processSequence;
-		ToolBoxUtility.copyDirectiory(sourceDir, targetDir);
 		
-		//Rename from HEX to fanhao
-		tcProcessor.renameFromHexToFanhao(sourceDir);
+		File tempFile = new File(sourceDir); 
+		if(tempFile.exists()){
+			ToolBoxUtility.copyDirectiory(sourceDir, targetDir);
+			
+			//Rename from HEX to fanhao
+			tcProcessor.renameFromHexToFanhao(sourceDir);
+		}
 	}
 	
-	public void PostJavByColaFile() throws ParseException, IOException, InterruptedException{
+	public static void PostJavByColaFile(String prefix) throws ParseException, IOException, InterruptedException{
 		String respHtml;
 		
 		ColaFileProcessor cfProcessor = new ColaFileProcessor();
 		cfProcessor.login();
 //		String respHtml = cfProcessor.getSpaceFileMain();
 		
-		String path = "sth\\KTDS";
+		String path = "sth\\" + prefix;
 		String[] folderLevel = path.split("\\\\");
 //		List<String> folderlist = Arrays.asList(folderLevel); // don't use this as 这个ArrayList并不是java.util包下面的ArrayList，而是java.util.Arrays类中的一个内部类, 继承自AbstractList , add和remove都是throw UnsupportedOperationException
 		List<String> folderlist = new ArrayList();
@@ -237,6 +257,15 @@ public class ContentGetPostToolCommander {
 		
 		jpProcessor.recoverPostJavByMapping(itemMap);
 		
-		System.out.println("Completed!!!");
+		logger.info("PostJavByColaFile Completed! ");
+	}
+	
+	public static void checkOutstandingUpload(String prefix) throws Exception {
+		
+		ColaFileProcessor cfProcessor = new ColaFileProcessor();
+		cfProcessor.login();
+		cfProcessor.compareLocal("sth\\"+prefix, Config.CAPTCHA_TMP_PATH+"\\" + prefix);
+		
+		logger.info("checkOutstandingUpload Completed! ");
 	}
 }

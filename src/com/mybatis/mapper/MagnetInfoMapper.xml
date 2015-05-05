@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.MagnetInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.MagnetInfo" >
+    <id column="magnetInfoHashInHex" property="magnetinfohashinhex" jdbcType="VARCHAR" />
+    <result column="resourceName" property="resourcename" jdbcType="VARCHAR" />
+    <result column="resourceDescription" property="resourcedescription" jdbcType="VARCHAR" />
+    <result column="fullMagnetInfoLink" property="fullmagnetinfolink" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    magnetInfoHashInHex, resourceName, resourceDescription, fullMagnetInfoLink
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from magnetinfo
+    where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from magnetinfo
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from magnetinfo
+    where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.MagnetInfo" >
+    insert into magnetinfo (magnetInfoHashInHex, resourceName, 
+      resourceDescription, fullMagnetInfoLink
+      )
+    values (#{magnetinfohashinhex,jdbcType=VARCHAR}, #{resourcename,jdbcType=VARCHAR}, 
+      #{resourcedescription,jdbcType=VARCHAR}, #{fullmagnetinfolink,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.MagnetInfo" >
+    insert into magnetinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="magnetinfohashinhex != null" >
+        magnetInfoHashInHex,
+      </if>
+      <if test="resourcename != null" >
+        resourceName,
+      </if>
+      <if test="resourcedescription != null" >
+        resourceDescription,
+      </if>
+      <if test="fullmagnetinfolink != null" >
+        fullMagnetInfoLink,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="magnetinfohashinhex != null" >
+        #{magnetinfohashinhex,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcename != null" >
+        #{resourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcedescription != null" >
+        #{resourcedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fullmagnetinfolink != null" >
+        #{fullmagnetinfolink,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.MagnetInfo" >
+    update magnetinfo
+    <set >
+      <if test="resourcename != null" >
+        resourceName = #{resourcename,jdbcType=VARCHAR},
+      </if>
+      <if test="resourcedescription != null" >
+        resourceDescription = #{resourcedescription,jdbcType=VARCHAR},
+      </if>
+      <if test="fullmagnetinfolink != null" >
+        fullMagnetInfoLink = #{fullmagnetinfolink,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.MagnetInfo" >
+    update magnetinfo
+    set resourceName = #{resourcename,jdbcType=VARCHAR},
+      resourceDescription = #{resourcedescription,jdbcType=VARCHAR},
+      fullMagnetInfoLink = #{fullmagnetinfolink,jdbcType=VARCHAR}
+    where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
+  </update>
+</mapper>

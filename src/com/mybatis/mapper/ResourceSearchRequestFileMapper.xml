@@ -32,7 +32,7 @@
     select 
     <include refid="Base_Column_List" />
     from resourcesearchrequestfile
-    where SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
+    where requestprocessstatus != "Completed" and SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}
     ORDER BY ProcessSequence Desc 
 	LIMIT 1
   </select>

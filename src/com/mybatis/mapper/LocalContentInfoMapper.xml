@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.LocalContentInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.LocalContentInfo" >
+    <id column="LocalContentInfoHashInHex" property="localcontentinfohashinhex" jdbcType="VARCHAR" />
+    <result column="LocalContentType" property="localcontenttype" jdbcType="VARCHAR" />
+    <result column="LocalContentExistFlag" property="localcontentexistflag" jdbcType="BIT" />
+    <result column="LocalContentPath" property="localcontentpath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    LocalContentInfoHashInHex, LocalContentType, LocalContentExistFlag, LocalContentPath
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from localcontentinfo
+    where LocalContentInfoHashInHex = #{localcontentinfohashinhex,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from localcontentinfo
+    where LocalContentInfoHashInHex = #{localcontentinfohashinhex,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.LocalContentInfo" >
+    insert into localcontentinfo (LocalContentInfoHashInHex, LocalContentType, 
+      LocalContentExistFlag, LocalContentPath)
+    values (#{localcontentinfohashinhex,jdbcType=VARCHAR}, #{localcontenttype,jdbcType=VARCHAR}, 
+      #{localcontentexistflag,jdbcType=BIT}, #{localcontentpath,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.LocalContentInfo" >
+    insert into localcontentinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="localcontentinfohashinhex != null" >
+        LocalContentInfoHashInHex,
+      </if>
+      <if test="localcontenttype != null" >
+        LocalContentType,
+      </if>
+      <if test="localcontentexistflag != null" >
+        LocalContentExistFlag,
+      </if>
+      <if test="localcontentpath != null" >
+        LocalContentPath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="localcontentinfohashinhex != null" >
+        #{localcontentinfohashinhex,jdbcType=VARCHAR},
+      </if>
+      <if test="localcontenttype != null" >
+        #{localcontenttype,jdbcType=VARCHAR},
+      </if>
+      <if test="localcontentexistflag != null" >
+        #{localcontentexistflag,jdbcType=BIT},
+      </if>
+      <if test="localcontentpath != null" >
+        #{localcontentpath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.LocalContentInfo" >
+    update localcontentinfo
+    <set >
+      <if test="localcontenttype != null" >
+        LocalContentType = #{localcontenttype,jdbcType=VARCHAR},
+      </if>
+      <if test="localcontentexistflag != null" >
+        LocalContentExistFlag = #{localcontentexistflag,jdbcType=BIT},
+      </if>
+      <if test="localcontentpath != null" >
+        LocalContentPath = #{localcontentpath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LocalContentInfoHashInHex = #{localcontentinfohashinhex,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.LocalContentInfo" >
+    update localcontentinfo
+    set LocalContentType = #{localcontenttype,jdbcType=VARCHAR},
+      LocalContentExistFlag = #{localcontentexistflag,jdbcType=BIT},
+      LocalContentPath = #{localcontentpath,jdbcType=VARCHAR}
+    where LocalContentInfoHashInHex = #{localcontentinfohashinhex,jdbcType=VARCHAR}
+  </update>
+</mapper>

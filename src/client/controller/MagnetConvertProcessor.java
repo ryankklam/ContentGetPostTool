@@ -52,6 +52,11 @@ public class MagnetConvertProcessor {
 	int timeout = 2000;
 	//String btSpreadSearch
 	
+	//for magnet txt
+	private static final String txtHeader1 = "磁力链/Magnet Link";
+	private static final String txtFooter1 = "如果发现内容有误，请私信告知，有专人复查.";
+	private static final String txtFooter2 = "If the attachment is not match the post , pls pm , team will go & check it out.";
+	
 	public MagnetConvertProcessor() throws IOException {
 		
 		processor = new HttpProcessor();
@@ -62,6 +67,46 @@ public class MagnetConvertProcessor {
 	//Reporting
 	int downloadCount = 0;
 
+	public boolean saveMagnetInfoTXT(MagnetInfo item , String fanhao){
+		
+		String txtHeader = item.getResourcename() + " " + txtHeader1;
+		
+		
+		File codeFile = null;
+
+		if (Config.UPLOAD_DONWLOAD_MAIN_PATH != "") {
+			
+			//check if output folder exist or not , to avoid file not found exception
+			String outputPath = Config.UPLOAD_DONWLOAD_MAIN_PATH + "\\" + fanhao;
+			File outputPathFile = new File(outputPath);
+			if(!outputPathFile.exists() && !outputPathFile.isDirectory()){
+			    logger.info(outputPathFile + " 不存在 , 立即创建！");  
+			    outputPathFile .mkdir(); 
+			}
+			
+			codeFile = new File(outputPath + "\\" + item.getMagnetinfohashinhex() + ".txt");
+		} else {
+			codeFile = new File(FileSystemView.getFileSystemView()
+					.getHomeDirectory().getPath()+ "\\" + fanhao + "\\" + item.getMagnetinfohashinhex() + ".txt");
+		}
+		
+		//check if file already exist , and skip download
+		if(codeFile.exists()){
+			logger.info(codeFile.getName() + " 已经存在！");  
+			return false;
+		}
+		
+		//output Magnet info txt
+		ToolBoxUtility.putStrToTXT(codeFile, txtHeader);
+		ToolBoxUtility.putStrToTXT(codeFile, item.getResourcedescription());
+		ToolBoxUtility.putStrToTXT(codeFile, item.getFullmagnetinfolink());
+		ToolBoxUtility.putStrToTXT(codeFile, "");
+		ToolBoxUtility.putStrToTXT(codeFile, txtFooter1);
+		ToolBoxUtility.putStrToTXT(codeFile, txtFooter2);
+		
+		return false;
+	}
+	
 	public void processDownloadByFanHao(String fanhao) throws ParseException, IOException, InterruptedException{
 
 		List<MagnetInfo> processList = serachMagnetInfo(fanhao);
@@ -81,11 +126,13 @@ public class MagnetConvertProcessor {
 		
 		for (File Filedata : uploadDataDir.listFiles()) {
 			
-			String hexInfo = Filedata.getName().replaceAll(".torrent", "");
+			String extension = "." + ToolBoxUtility.getExtensionName(Filedata.getName());
+			
+			String hexInfo = Filedata.getName().replaceAll(extension, "");
 			
 			MagnetInfo magnetInfo = mi.selectByPrimaryKey(hexInfo);
 			if(magnetInfo!=null){
-				String fanhaoName = magnetInfo.getResourcename().concat(".torrent");
+				String fanhaoName = magnetInfo.getResourcename().concat(extension);
 				ToolBoxUtility.renameFile(localFolder,Filedata.getName(),fanhaoName);
 			}
 		}
@@ -165,6 +212,8 @@ public class MagnetConvertProcessor {
 			return magItemList;
 	}
 	
+
+	
 	public boolean processTorrentConvert(MagnetInfo item , String fanhao) throws IOException{
 		
 		logger.info(item.getResourcedescription());	
@@ -219,7 +268,8 @@ public class MagnetConvertProcessor {
 					return true;
 	
 			}else{
-				logger.info("Not found in btBox!!!");	
+				logger.info("Not found in btBox!!! Try output magnet link txt");
+				saveMagnetInfoTXT(item,fanhao);
 			}
 		}catch(Exception e){
 			logger.info("Catch Exception - Rollback");	

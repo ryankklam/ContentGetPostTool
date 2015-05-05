@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.JavPostStatusMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.JavPostStatus" >
+    <id column="JavPostLink" property="javpostlink" jdbcType="VARCHAR" />
+    <result column="JavPostStorageDest" property="javpoststoragedest" jdbcType="VARCHAR" />
+    <result column="JavPostStorageLink" property="javpoststoragelink" jdbcType="VARCHAR" />
+    <result column="JavPostID" property="javpostid" jdbcType="VARCHAR" />
+    <result column="javPostStatus" property="javpoststatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    JavPostLink, JavPostStorageDest, JavPostStorageLink, JavPostID, javPostStatus
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from javpoststatus
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByStorageDest" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from javpoststatus
+    where JavPostStorageDest = #{JavPostStorageDest,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from javpoststatus
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.JavPostStatus" >
+    insert into javpoststatus (JavPostLink, JavPostStorageDest, 
+      JavPostStorageLink, JavPostID, javPostStatus
+      )
+    values (#{javpostlink,jdbcType=VARCHAR}, #{javpoststoragedest,jdbcType=VARCHAR}, 
+      #{javpoststoragelink,jdbcType=VARCHAR}, #{javpostid,jdbcType=VARCHAR}, #{javpoststatus,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.JavPostStatus" >
+    insert into javpoststatus
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="javpostlink != null" >
+        JavPostLink,
+      </if>
+      <if test="javpoststoragedest != null" >
+        JavPostStorageDest,
+      </if>
+      <if test="javpoststoragelink != null" >
+        JavPostStorageLink,
+      </if>
+      <if test="javpostid != null" >
+        JavPostID,
+      </if>
+      <if test="javpoststatus != null" >
+        javPostStatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="javpostlink != null" >
+        #{javpostlink,jdbcType=VARCHAR},
+      </if>
+      <if test="javpoststoragedest != null" >
+        #{javpoststoragedest,jdbcType=VARCHAR},
+      </if>
+      <if test="javpoststoragelink != null" >
+        #{javpoststoragelink,jdbcType=VARCHAR},
+      </if>
+      <if test="javpostid != null" >
+        #{javpostid,jdbcType=VARCHAR},
+      </if>
+      <if test="javpoststatus != null" >
+        #{javpoststatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.JavPostStatus" >
+    update javpoststatus
+    <set >
+      <if test="javpoststoragedest != null" >
+        JavPostStorageDest = #{javpoststoragedest,jdbcType=VARCHAR},
+      </if>
+      <if test="javpoststoragelink != null" >
+        JavPostStorageLink = #{javpoststoragelink,jdbcType=VARCHAR},
+      </if>
+      <if test="javpostid != null" >
+        JavPostID = #{javpostid,jdbcType=VARCHAR},
+      </if>
+      <if test="javpoststatus != null" >
+        javPostStatus = #{javpoststatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.JavPostStatus" >
+    update javpoststatus
+    set JavPostStorageDest = #{javpoststoragedest,jdbcType=VARCHAR},
+      JavPostStorageLink = #{javpoststoragelink,jdbcType=VARCHAR},
+      JavPostID = #{javpostid,jdbcType=VARCHAR},
+      javPostStatus = #{javpoststatus,jdbcType=VARCHAR}
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </update>
+</mapper>
