@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.mybatis.model.MagnetInfo" >
     <id column="magnetInfoHashInHex" property="magnetinfohashinhex" jdbcType="VARCHAR" />
     <result column="resourceName" property="resourcename" jdbcType="VARCHAR" />
+    <result column="isFakeResource" property="isfakeresource" jdbcType="INTEGER" />
     <result column="resourceDescription" property="resourcedescription" jdbcType="VARCHAR" />
     <result column="fullMagnetInfoLink" property="fullmagnetinfolink" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    magnetInfoHashInHex, resourceName, resourceDescription, fullMagnetInfoLink
+    magnetInfoHashInHex, resourceName, isFakeResource, resourceDescription, fullMagnetInfoLink
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -16,24 +17,16 @@
     from magnetinfo
     where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
   </select>
-  
-  <select id="selectAll" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from magnetinfo
-  </select>
-  
-  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from magnetinfo
     where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mybatis.model.MagnetInfo" >
     insert into magnetinfo (magnetInfoHashInHex, resourceName, 
-      resourceDescription, fullMagnetInfoLink
+      isFakeResource, resourceDescription, fullMagnetInfoLink
       )
     values (#{magnetinfohashinhex,jdbcType=VARCHAR}, #{resourcename,jdbcType=VARCHAR}, 
-      #{resourcedescription,jdbcType=VARCHAR}, #{fullmagnetinfolink,jdbcType=VARCHAR}
+      #{isfakeresource,jdbcType=INTEGER}, #{resourcedescription,jdbcType=VARCHAR}, #{fullmagnetinfolink,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mybatis.model.MagnetInfo" >
@@ -44,6 +37,9 @@
       </if>
       <if test="resourcename != null" >
         resourceName,
+      </if>
+      <if test="isfakeresource != null" >
+        isFakeResource,
       </if>
       <if test="resourcedescription != null" >
         resourceDescription,
@@ -59,6 +55,9 @@
       <if test="resourcename != null" >
         #{resourcename,jdbcType=VARCHAR},
       </if>
+      <if test="isfakeresource != null" >
+        #{isfakeresource,jdbcType=INTEGER},
+      </if>
       <if test="resourcedescription != null" >
         #{resourcedescription,jdbcType=VARCHAR},
       </if>
@@ -73,6 +72,9 @@
       <if test="resourcename != null" >
         resourceName = #{resourcename,jdbcType=VARCHAR},
       </if>
+      <if test="isfakeresource != null" >
+        isFakeResource = #{isfakeresource,jdbcType=INTEGER},
+      </if>
       <if test="resourcedescription != null" >
         resourceDescription = #{resourcedescription,jdbcType=VARCHAR},
       </if>
@@ -85,6 +87,7 @@
   <update id="updateByPrimaryKey" parameterType="com.mybatis.model.MagnetInfo" >
     update magnetinfo
     set resourceName = #{resourcename,jdbcType=VARCHAR},
+      isFakeResource = #{isfakeresource,jdbcType=INTEGER},
       resourceDescription = #{resourcedescription,jdbcType=VARCHAR},
       fullMagnetInfoLink = #{fullmagnetinfolink,jdbcType=VARCHAR}
     where magnetInfoHashInHex = #{magnetinfohashinhex,jdbcType=VARCHAR}

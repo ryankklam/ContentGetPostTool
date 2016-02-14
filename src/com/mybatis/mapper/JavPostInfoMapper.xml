@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.JavPostInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.JavPostInfo" >
+    <id column="JavPostLink" property="javpostlink" jdbcType="VARCHAR" />
+    <result column="JavPostId" property="javpostid" jdbcType="VARCHAR" />
+    <result column="JavPostTitle" property="javposttitle" jdbcType="VARCHAR" />
+    <result column="JavaPostTimeStamp" property="javaposttimestamp" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    JavPostLink, JavPostId, JavPostTitle, JavaPostTimeStamp
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from javpostinfo
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from javpostinfo
+  </select>
+  
+   <select id="selectByJavPostId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from javpostinfo
+    where JavPostId = #{javpostid,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectPendingPostJavID" resultType="String" flushCache="false" useCache="false">
+    select javpostid
+    from javpostinfo
+    where JavPostLink not in (select JavPostLink from javpoststatus) 
+	group by javpostid having count(1) = 1 
+  </select>   
+   
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from javpostinfo
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.JavPostInfo" >
+    insert into javpostinfo (JavPostLink, JavPostId, JavPostTitle, 
+      JavaPostTimeStamp)
+    values (#{javpostlink,jdbcType=VARCHAR}, #{javpostid,jdbcType=VARCHAR}, #{javposttitle,jdbcType=VARCHAR}, 
+      #{javaposttimestamp,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.JavPostInfo" >
+    insert into javpostinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="javpostlink != null" >
+        JavPostLink,
+      </if>
+      <if test="javpostid != null" >
+        JavPostId,
+      </if>
+      <if test="javposttitle != null" >
+        JavPostTitle,
+      </if>
+      <if test="javaposttimestamp != null" >
+        JavaPostTimeStamp,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="javpostlink != null" >
+        #{javpostlink,jdbcType=VARCHAR},
+      </if>
+      <if test="javpostid != null" >
+        #{javpostid,jdbcType=VARCHAR},
+      </if>
+      <if test="javposttitle != null" >
+        #{javposttitle,jdbcType=VARCHAR},
+      </if>
+      <if test="javaposttimestamp != null" >
+        #{javaposttimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.JavPostInfo" >
+    update javpostinfo
+    <set >
+      <if test="javpostid != null" >
+        JavPostId = #{javpostid,jdbcType=VARCHAR},
+      </if>
+      <if test="javposttitle != null" >
+        JavPostTitle = #{javposttitle,jdbcType=VARCHAR},
+      </if>
+      <if test="javaposttimestamp != null" >
+        JavaPostTimeStamp = #{javaposttimestamp,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.JavPostInfo" >
+    update javpostinfo
+    set JavPostId = #{javpostid,jdbcType=VARCHAR},
+      JavPostTitle = #{javposttitle,jdbcType=VARCHAR},
+      JavaPostTimeStamp = #{javaposttimestamp,jdbcType=TIMESTAMP}
+    where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -102,7 +102,22 @@ public class SessionFactorySingleton {
         }    
   
         return session;  
-    }  
-  
-  
+    }
+    
+    public SqlSession getNewOpenSession() throws IOException {  
+
+		SqlSessionFactory sqlSessionFactory = null;
+		
+		Reader reader;
+		
+		try {
+			reader = Resources.getResourceAsReader("Configuration.xml");
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return sqlSessionFactory.openSession();
+    } 
+
 }  

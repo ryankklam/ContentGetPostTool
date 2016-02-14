@@ -1,7 +1,5 @@
 package com.mybatis.inter;
 
-import java.util.List;
-
 import com.mybatis.model.MagnetInfo;
 
 public interface MagnetInfoMapper {
@@ -16,6 +14,4 @@ public interface MagnetInfoMapper {
     int updateByPrimaryKeySelective(MagnetInfo record);
 
     int updateByPrimaryKey(MagnetInfo record);
-    
-    List<MagnetInfo> selectAll();
 }

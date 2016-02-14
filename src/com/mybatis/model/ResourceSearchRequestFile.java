@@ -6,8 +6,24 @@ public class ResourceSearchRequestFile {
     private String searchkeyword;
 
     private String requestprocessstatus;
+    
+    private String requesttype;
 
-    public String getProcesssequence() {
+    /**
+	 * @return the requesttype
+	 */
+	public String getRequesttype() {
+		return requesttype;
+	}
+
+	/**
+	 * @param requesttype the requesttype to set
+	 */
+	public void setRequesttype(String requesttype) {
+		this.requesttype = requesttype;
+	}
+
+	public String getProcesssequence() {
         return processsequence;
     }
 

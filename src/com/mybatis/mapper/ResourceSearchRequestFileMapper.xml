@@ -4,10 +4,11 @@
   <resultMap id="BaseResultMap" type="com.mybatis.model.ResourceSearchRequestFile">
     <id column="ProcessSequence" jdbcType="VARCHAR" property="processsequence" />
     <result column="SearchKeyWord" jdbcType="VARCHAR" property="searchkeyword" />
+    <result column="RequestType" jdbcType="VARCHAR" property="requesttype" />
     <result column="RequestProcessStatus" jdbcType="VARCHAR" property="requestprocessstatus" />
   </resultMap>
   <sql id="Base_Column_List">
-    ProcessSequence, SearchKeyWord, RequestProcessStatus
+    ProcessSequence, SearchKeyWord,RequestType, RequestProcessStatus
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -42,9 +43,9 @@
     where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.mybatis.model.ResourceSearchRequestFile">
-    insert into resourcesearchrequestfile (ProcessSequence, SearchKeyWord, RequestProcessStatus
+    insert into resourcesearchrequestfile (ProcessSequence, SearchKeyWord,RequestType, RequestProcessStatus
       )
-    values (#{processsequence,jdbcType=VARCHAR}, #{searchkeyword,jdbcType=VARCHAR}, #{requestprocessstatus,jdbcType=VARCHAR}
+    values (#{processsequence,jdbcType=VARCHAR}, #{searchkeyword,jdbcType=VARCHAR}, #{requesttype,jdbcType=VARCHAR}, #{requestprocessstatus,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.mybatis.model.ResourceSearchRequestFile">
@@ -55,6 +56,9 @@
       </if>
       <if test="searchkeyword != null">
         SearchKeyWord,
+      </if>
+      <if test="requesttype != null">
+        RequestType,
       </if>
       <if test="requestprocessstatus != null">
         RequestProcessStatus,
@@ -67,6 +71,9 @@
       <if test="searchkeyword != null">
         #{searchkeyword,jdbcType=VARCHAR},
       </if>
+      <if test="requesttype != null">
+        #{requesttype,jdbcType=VARCHAR},
+      </if>
       <if test="requestprocessstatus != null">
         #{requestprocessstatus,jdbcType=VARCHAR},
       </if>
@@ -78,6 +85,9 @@
       <if test="searchkeyword != null">
         SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR},
       </if>
+      <if test="requesttype != null">
+        RequestType = #{requesttype,jdbcType=VARCHAR},
+      </if>
       <if test="requestprocessstatus != null">
         RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR},
       </if>
@@ -86,7 +96,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.mybatis.model.ResourceSearchRequestFile">
     update resourcesearchrequestfile
-    set SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR},
+    set SearchKeyWord = #{searchkeyword,jdbcType=VARCHAR}, 
+      RequestType = #{requesttype,jdbcType=VARCHAR},
       RequestProcessStatus = #{requestprocessstatus,jdbcType=VARCHAR}
     where ProcessSequence = #{processsequence,jdbcType=VARCHAR}
   </update>

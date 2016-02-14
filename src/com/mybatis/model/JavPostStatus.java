@@ -50,4 +50,17 @@ public class JavPostStatus {
     public void setJavpoststatus(String javpoststatus) {
         this.javpoststatus = javpoststatus == null ? null : javpoststatus.trim();
     }
+    
+	public boolean equals(Object obj) {
+		if (obj instanceof JavPostStatus) {
+			JavPostStatus jps = (JavPostStatus) obj;
+			return this.javpostlink.equals(jps.javpostlink)
+					&& this.javpoststoragedest.equals(jps.javpoststoragedest)
+					&& this.javpoststoragelink.equals(jps.javpoststoragelink)
+					&& this.javpostid.equals(jps.javpostid)
+					&& this.javpoststatus.equals(jps.javpoststatus)
+					;
+		}
+		return super.equals(obj);
+	}
 }

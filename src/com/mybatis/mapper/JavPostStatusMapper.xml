@@ -18,11 +18,29 @@
     where JavPostLink = #{javpostlink,jdbcType=VARCHAR}
   </select>
   
+  <select id="selectCountAll" resultType="java.lang.Integer">
+    select count(*) from
+    javpoststatus
+  </select>
+
+  <select id="selectCountAllByStatus" resultType="java.lang.Integer">
+    select count(*) from
+    javpoststatus
+    where javPostStatus = #{javPostStatus,jdbcType=VARCHAR}
+  </select>
+  
   <select id="selectByStorageDest" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from javpoststatus
     where JavPostStorageDest = #{JavPostStorageDest,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByJavPostIdRange" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from javpoststatus
+    <![CDATA[ where JavPostID<= ${high} and JavPostID>=#{low}]]>    
   </select>
   
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >

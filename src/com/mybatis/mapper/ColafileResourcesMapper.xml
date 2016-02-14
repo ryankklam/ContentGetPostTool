@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mybatis.inter.ColafileResourcesMapper" >
+  <resultMap id="BaseResultMap" type="com.mybatis.model.ColafileResources" >
+    <id column="objectLink" property="objectlink" jdbcType="VARCHAR" />
+    <result column="storageDest" property="storagedest" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentid" jdbcType="VARCHAR" />
+    <result column="selfFolderId" property="selffolderid" jdbcType="VARCHAR" />
+    <result column="selfFolderName" property="selffoldername" jdbcType="VARCHAR" />
+    <result column="objectName" property="objectname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    objectLink, storageDest, parentId, selfFolderId, selfFolderName, objectName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from colafile_resources
+    where objectLink = #{objectlink,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBySelfFolderName" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from colafile_resources
+    where selfFolderName = #{selfFolderName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectPendingPostItem" resultMap="BaseResultMap" flushCache="true" useCache="false">
+    select 
+    <include refid="Base_Column_List" />
+    from colafile_resources
+    where objectName in (SELECT JavPostID  FROM javpostinfo where JavPostLink not in (select JavPostLink from javpoststatus) 
+							group by javpostid having count(1) = 1) 
+  </select>
+   <select id="selectPendingPostItemCount" resultType="java.lang.Integer" flushCache="true" useCache="false">
+    select count(*)
+    from colafile_resources
+    where objectName in (SELECT JavPostID  FROM javpostinfo where JavPostLink not in (select JavPostLink from javpoststatus) 
+							group by javpostid having count(1) = 1) 
+  </select>
+ 
+  <select id="selectPendingUpdateFolderList" resultType="java.lang.String">
+    select selfFolderName
+    from colafile_resources
+    where objectName not in (SELECT JavPostID  FROM javpostinfo) group by selfFolderName 
+  </select>   
+  
+  <select id="selectExisitngPrefixList" resultType="java.lang.String">
+    select distinct(selfFolderName)
+    from colafile_resources
+    group by selfFolderName
+  </select>   
+   
+  <select id="selectByObjectName" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from colafile_resources
+    where objectName = #{objectName,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from colafile_resources
+    where objectLink = #{objectlink,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByObjectName" parameterType="java.lang.String" >
+    delete from colafile_resources
+    where objectName = #{objectName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.mybatis.model.ColafileResources" >
+    insert into colafile_resources (objectLink, storageDest, parentId, 
+      selfFolderId, selfFolderName, objectName
+      )
+    values (#{objectlink,jdbcType=VARCHAR}, #{storagedest,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{selffolderid,jdbcType=VARCHAR}, #{selffoldername,jdbcType=VARCHAR}, #{objectname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mybatis.model.ColafileResources" >
+    insert into colafile_resources
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="objectlink != null" >
+        objectLink,
+      </if>
+      <if test="storagedest != null" >
+        storageDest,
+      </if>
+      <if test="parentid != null" >
+        parentId,
+      </if>
+      <if test="selffolderid != null" >
+        selfFolderId,
+      </if>
+      <if test="selffoldername != null" >
+        selfFolderName,
+      </if>
+      <if test="objectname != null" >
+        objectName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="objectlink != null" >
+        #{objectlink,jdbcType=VARCHAR},
+      </if>
+      <if test="storagedest != null" >
+        #{storagedest,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="selffolderid != null" >
+        #{selffolderid,jdbcType=VARCHAR},
+      </if>
+      <if test="selffoldername != null" >
+        #{selffoldername,jdbcType=VARCHAR},
+      </if>
+      <if test="objectname != null" >
+        #{objectname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mybatis.model.ColafileResources" >
+    update colafile_resources
+    <set >
+      <if test="storagedest != null" >
+        storageDest = #{storagedest,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null" >
+        parentId = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="selffolderid != null" >
+        selfFolderId = #{selffolderid,jdbcType=VARCHAR},
+      </if>
+      <if test="selffoldername != null" >
+        selfFolderName = #{selffoldername,jdbcType=VARCHAR},
+      </if>
+      <if test="objectname != null" >
+        objectName = #{objectname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where objectLink = #{objectlink,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mybatis.model.ColafileResources" >
+    update colafile_resources
+    set storageDest = #{storagedest,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=VARCHAR},
+      selfFolderId = #{selffolderid,jdbcType=VARCHAR},
+      selfFolderName = #{selffoldername,jdbcType=VARCHAR},
+      objectName = #{objectname,jdbcType=VARCHAR}
+    where objectLink = #{objectlink,jdbcType=VARCHAR}
+  </update>
+</mapper>

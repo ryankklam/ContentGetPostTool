@@ -5,6 +5,8 @@ public class MagnetInfo {
 
     private String resourcename;
 
+    private Integer isfakeresource;
+
     private String resourcedescription;
 
     private String fullmagnetinfolink;
@@ -23,6 +25,14 @@ public class MagnetInfo {
 
     public void setResourcename(String resourcename) {
         this.resourcename = resourcename == null ? null : resourcename.trim();
+    }
+
+    public Integer getIsfakeresource() {
+        return isfakeresource;
+    }
+
+    public void setIsfakeresource(Integer isfakeresource) {
+        this.isfakeresource = isfakeresource;
     }
 
     public String getResourcedescription() {
